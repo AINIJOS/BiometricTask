@@ -1,4 +1,5 @@
 from django.db import models
+from apps.restaurants.models import Restaurant
 
 
 class ThicknessChoices(models.TextChoices):
@@ -8,12 +9,9 @@ class ThicknessChoices(models.TextChoices):
     XL = ('XL', 'Extra Large')
 
 
-class Restaurant(models.Model):
-    name = models.CharField(max_length=128)
-    address = models.CharField(max_length=128, blank=True)
-
-    def __str__(self):
-        return self.name
+class StateChoices(models.TextChoices):
+    RAW = 'RAW'
+    DONE = 'DONE'
 
 
 class Pizza(models.Model):
@@ -25,16 +23,12 @@ class Pizza(models.Model):
     )
     cheese = models.CharField(max_length=128, blank=True)
     secret_ingredient = models.CharField(max_length=128, blank=True)
+    cooking_time = models.FloatField(default=10)
 
-    restaurant = models.ForeignKey(
-        to=Restaurant,
-        on_delete=models.CASCADE,
-        related_name='pizzas'
+    state = models.CharField(
+        max_length=10,
+        default='RAW'
     )
 
     def __str__(self):
         return self.name
-
-# models.SET_NULL
-# models.DO_NOTHING
-# models.CASCADE
